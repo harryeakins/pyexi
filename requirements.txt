@@ -6,8 +6,12 @@
 #
 attrs==22.1.0
     # via pytest
+elementpath==3.0.1
+    # via xmlschema
 iniconfig==1.1.1
     # via pytest
+lark==1.1.2
+    # via -r requirements.in
 packaging==21.3
     # via pytest
 pluggy==1.0.0
@@ -20,3 +24,5 @@ pytest==7.1.2
     # via -r requirements.in
 tomli==2.0.1
     # via pytest
+xmlschema==2.0.1
+    # via -r requirements.in
