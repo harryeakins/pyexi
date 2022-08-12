@@ -9,7 +9,6 @@ class Production:
         self.event_code = args
 
     def set_bit_lengths(self, *args):
-        assert len(args) >= len(self.event_code)
         self.bit_lengths = args[:len(self.event_code)]
 
     def get_bits(self):
@@ -25,12 +24,20 @@ class Grammar:
     def __init__(self, initial_state, dict):
         self.initial_state = initial_state
         self.dict = dict
+        self._preserve = {
+            "CM": False,
+            "PI": False,
+            "DT": False,
+            "ER": False,
+        }
         self._update_bitlengths()
 
     def _update_bitlengths(self):
         for lhs in self.dict:
             max_values = defaultdict(int)
             for event in self.dict[lhs]:
+                if event in self._preserve and self._preserve[event] is False:
+                    continue
                 production = self.dict[lhs][event]
                 for i, code in enumerate(production.event_code):
                     max_values[i] = max(max_values[i], code)
@@ -98,6 +105,13 @@ class ExiHandler(sax.handler.ContentHandler):
 
     def startElement(self, name, attrs):
         self._process_event("SE(*)")
+
+        # Hardcode empty string URI
+        self.output[-1].append("01")
+
+        # Local name
+        self.output[-1].append(format(len(name) + 1, "08b") + ''.join([format(ord(ch), "08b") for ch in name]))
+
         for attr in attrs.items():
             self._process_event("AT(*)")
 
