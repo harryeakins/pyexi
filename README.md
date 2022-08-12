@@ -8,7 +8,7 @@ Work in progress
 
 1. Create a virtual environment in the `venv` directory:
 
-`$ python -m venv venv`
+`$ python3 -m venv venv`
 
 2. Load the virtual environment shell:
 
